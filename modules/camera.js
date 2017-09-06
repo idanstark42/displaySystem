@@ -1,18 +1,19 @@
 displaySystem.registerModule({
     name: 'camera',
-    template: multiline(function() {/*
+    template: `
         <div id="camera" class="hidden">
             <video id="camera" autoplay></video>
             <div id="cameraError"></div>
         </div>
-    */}),
-    style: multiline(function() {/*
+    `,
+    style: `
         #camera {
             position: absolute;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
         }
 
         #camera.hidden {
@@ -38,7 +39,7 @@ displaySystem.registerModule({
             }
 
         }
-    */}),
+    `,
     factory: function(config) {
         var el;
         var useAudio = false;
@@ -101,11 +102,13 @@ displaySystem.registerModule({
         }
 
         function show() {
-            getElement().className = '';
+            getElement().classList.remove('hidden');
+            getElement().classList.add('visible');
         }
 
         function hide() {
-            getElement().className = 'hidden';
+            getElement().classList.add('hidden');
+            getElement().classList.remove('visible');
         }
 
         if (config.audio) {

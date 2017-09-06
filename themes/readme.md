@@ -1,12 +1,12 @@
 Themes
 ======
 
-default
------
-
-![default theme screenshot](default.png)
-
 rednblue
 -----
 
-![rednblue theme screenshot](rednblue.png)
+![rednblue theme screenshot](rednblue/rednblue.png)
+
+rednblue-plus
+-----
+
+![rednblue-plus theme screenshot](rednblue-plus/rednblue-plus.png)

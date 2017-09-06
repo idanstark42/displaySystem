@@ -1,9 +1,9 @@
 displaySystem.registerModule({
     name: 'twitter',
-    template: multiline(function() {/*
+    template: `
         <div id="twitter" class="hidden"><span class="container"></span></div>
-    */}),
-    style: multiline(function() {/*
+    `,
+    style: `
         #twitter {
             position: absolute;
             bottom: 0;
@@ -22,7 +22,7 @@ displaySystem.registerModule({
             padding-right: 1.5em;
             font-size: 6vh;
         }
-    */}),
+    `,
     factory: function(config,onMessage) {
 
         var tweetsIndex = {};
@@ -39,20 +39,22 @@ displaySystem.registerModule({
         var speed = 100;
         var seq = 0;
 
-        function getTwitterDiv() {
+        function getElement() {
             return div?div:(div=document.getElementById('twitter'));
         }
 
         function getContainer() {
-            return container?container:(container = getTwitterDiv().firstChild);
+            return container?container:(container = getElement().firstChild);
         }
 
         function show() {
-            getTwitterDiv().className = '';
+            getElement().classList.remove('hidden');
+            getElement().classList.add('visible');
         }
 
         function hide() {
-            getTwitterDiv().className = 'hidden';
+            getElement().classList.add('hidden');
+            getElement().classList.remove('visible');
         }
 
         //sorting

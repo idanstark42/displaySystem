@@ -14,11 +14,11 @@ displaySystem.config({
             // color: "lime",
         },
         'camera': {
-            visible: true,
+            // visible: true,
             // audio: true,
         },
         'gallery': {
-            // visible: true,
+            visible: true,
             transition: 'fade',
             size: 'cover',
             timeout: 4,
@@ -27,14 +27,17 @@ displaySystem.config({
                 'http://lorempixel.com/640/480/people/2',
                 'http://lorempixel.com/640/480/people/3',
                 'http://lorempixel.com/640/480/people/4'
-            ]
+            ],
+            pages: [
+                // 'http://www.fll-tools.com/'
+            ],
         },
         'clock': {
-            // visible: true,
+            visible: true,
             // countdown: 20,
         },
         'time': {
-            // visible: true,
+            visible: true,
             // format: "MM:ss",
         },
         'twitter': {
@@ -43,27 +46,38 @@ displaySystem.config({
         },
         'lowThird': {
             visible: true,
-            line1: 'press \'C\'',
+            line1: '❤️ press \'C\'',
             line2: 'to show the control window',
         },
         'list': {
             // visible: true,
             header: 'results round 1',
             data: [
-                ['just try',1],
-                ['to copy',2],
-                ['and paste',3],
-                ['some cells',4],
-                ['from excel',5],
-                ['into the control',6],
-                ['window! You\'ll be',7],
-                ['amazed!',8],
-                ['It even has',8],
-                ['automatic',8],
-                ['paging',8],
+                ['🇳🇱 just try',1],
+                ['🇳🇱 to copy',2],
+                ['🇪🇬 and paste',3],
+                ['🇪🇬 some cells',4],
+                ['🇪🇬 from excel',5],
+                ['🇺🇸 into the control',6],
+                ['🇺🇸 window! You\'ll be',7],
+                ['🇺🇸 amazed!',8],
+                ['🇳🇱 It even has',8],
+                ['🇳🇱 automatic',8],
+                ['🇳🇱 paging',8],
             ],
             timer: 5000,
             lines: 8
+        },
+        'sprite': {
+            // visible: true,
+            sprites: [{
+                width: '100%',
+                top: '3.5vh',
+                fontSize: '8vh',
+                textAlign: 'center',
+                color: 'rgba(255,255,255,0.5)',
+                html: 'FIRST LEGO League'
+            }]
         },
         'table': {
             // visible: true,
@@ -85,9 +99,23 @@ displaySystem.config({
             lines: 8
         },
         'css': {
-            href: 'themes/rednblue.css',
-            // href: 'themes/default.css',
+            href: [
+                'themes/rednblue-plus/rednblue-plus.css',
+                // 'themes/rednblue-plus/rednblue-plus-mod-rtl.css',
+                // 'themes/rednblue-plus/rednblue-plus-mod-opaque.css'
+            ],
+            // href: [
+            //     'themes/rednblue/rednblue.css',
+            //     // 'themes/rednblue/rednblue-mod-rtl.css'
+            // ],
+            // href: 'themes/default/default.css',
             // gist: '9c7e4efaba9dbbc4831b'
+        },
+        'geometry': {
+            zoom: 1,
+            aspect: 'native',
+            rotation: 0,
+            overscan: [0,0,0,0]
         },
         'keybindings': {
             'q': 'time.show()',
@@ -100,6 +128,8 @@ displaySystem.config({
             'f': 'twitter.hide()',
             't': 'list.show()',
             'g': 'list.hide()',
+            'y': 'table.show()',
+            'h': 'table.hide()',
             'c': 'controls.open()',
             // 'c': function() {
             //     window.open('controls.html','fllDisplayControlWindow','resize=yes,width=800,height=350');
@@ -107,6 +137,10 @@ displaySystem.config({
         },
         'controls': {
             //url: <your own control window>
+        },
+        'emojione': {
+            // displays emoji characters
+            selector: '.line1, .list-cell, .tweet'
         }
     },
     //path to the modules, can even be a full url

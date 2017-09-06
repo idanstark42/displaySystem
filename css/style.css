@@ -4,8 +4,19 @@ html, body {
     margin: 0;
     padding: 0;
 }
-/* hides screen during initialization */
-.curtain {
+
+
+
+/* hides screen during initialization, overridden in themes */
+
+body {
+    visibility: hidden;
+}
+
+
+/* hides elements that are supposed to be hidden at least until theme is loaded and overrides the behavior */
+
+.hidden {
     visibility: hidden;
 }
 
@@ -17,12 +28,15 @@ html, body {
     bottom: 0;
 }
 
+
 /* control window */
+
 @media screen {
     body.controls {
         font-family: verdana, helvetica, sans-serif;
         font-size: 12px;
         padding: 12px;
+        visibility: visible;
     }
     body.controls .instructions {
         text-align: right;
@@ -35,8 +49,7 @@ html, body {
         display: inline-block;
         white-space: nowrap;
     }
-    body.controls input,
-    body.controls textarea {
+    body.controls input, body.controls textarea {
         width: 75px;
         border: 1px solid silver;
         border-right: none;

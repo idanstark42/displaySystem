@@ -1,7 +1,17 @@
-Display Systems
+Display System, a FirstLegoLeague Module
 ================
 
-![rednblue theme](themes/rednblue.png)
+## FLL Modules
+
+![](https://github.com/FirstLegoLeague/Coordination/wiki/National-setup.png)
+
+Display System can be a block in a larger framework of cooperating modules. Read more about it [here](https://github.com/FirstLegoLeague/Coordination/wiki)
+
+However, it can also be used standalone.
+
+## Display System
+
+![rednblue-plus theme](themes/rednblue-plus/rednblue-plus.png)
 
 This is a general purpose, configurable system for data display. It currently contains 8 modules, which are explained further on.
 
@@ -30,12 +40,15 @@ Contents
     - [background](#background)
     - [camera](#camera)
     - [gallery](#gallery)
+    - [sprite](#sprite)
     - [clock](#clock)
     - [time](#time)
     - [list](#list)
+    - [table](#table)
     - [lowThird](#lowthird)
     - [twitter](#twitter)
     - [css](#css)
+    - [geometry](#geometry)
     - [keybindings](#keybindings)
 - [Theming](#theming)
     - [Included themes](#included-themes)
@@ -196,9 +209,9 @@ Start:
 Send a message:
 
     //*nix
-    mhub-client -n twitter -t twitter:addMessage -d '{"id":123,"user":{"screen_name":"FLL"},"text":"FLL is great"}'
+    mhub-client -n default -t twitter:addMessage -d '{"id":123,"user":{"screen_name":"FLL"},"text":"FLL is great"}'
     //windows
-    mhub-client -n twitter -t twitter:addMessage -d "{""id"":123,""user"":{""screen_name"":""FLL""},""text"":""FLL is great""}"
+    mhub-client -n default -t twitter:addMessage -d "{""id"":123,""user"":{""screen_name"":""FLL""},""text"":""FLL is great""}"
 
 In your `config.js`, make sure you have the following options:
 
@@ -258,7 +271,7 @@ Now test your twitter stream in the console:
 
 This would start streaming live twitter messages in your console. You are now one step away from connecting everything:
 
-    tweet stream lego --json | mhub-client -n twitter -t twitter:addMessage -i json
+    tweet stream lego --json | mhub-client -n default -t twitter:addMessage -i json
 
 This command uses [pipes](http://en.wikipedia.org/wiki/Pipeline_(Unix)) to take the output of the `tweet` utility and *pipe* it into `mhub-client`.
 
@@ -282,14 +295,14 @@ Then make sure that in the mhub-server config (`server.conf.json`), the `time` n
 
 Then pipe it through to an mhub-client instance:
 
-    cli-time -m json -i | mhub-client -n time -t time:set -i json
+    cli-time -m json -i | mhub-client -n default -t time:set -i json
 
 To set the time to 0 and start counting:
 
     //*nix
-    mhub-client -n time -t time:set -d '{"timestamp":"0"}'
+    mhub-client -n default -t time:set -d '{"timestamp":"0"}'
     //windows
-    mhub-client -n time -t time:set -d "{""timestamp"":""0""}"
+    mhub-client -n default -t time:set -d "{""timestamp"":""0""}"
 
 Note that the `"0"` is quoted and it actually means setting the time to Jan 1 2000 at 00:00 in your local timezone.
 
@@ -350,6 +363,11 @@ mhub topics:
 
 A gallery of images. Partially transparent images may be used to display for example some logos in corners of the screen. Note that in addition to displaying images, you can use a custom css stylesheet to completely customize your experience (this is somewhat of a more advanced usage though).
 
+To store images online, use any image hosting service, like [imgur](http://imgur.com/), [postimage](https://postimage.io) or [tinypic](http://tinypic.com/)
+
+
+Another option for gallery is to display arbitrary pages. These will be displayed in an `iframe`. Note that not all websites can be displayed this way. Some of them do not allow rendering in an iframe.
+
 Configuration options:
 
 - `visible`: initial visibility, defaults to false,
@@ -360,6 +378,8 @@ Configuration options:
     - `contain`: enlarge the image to fit the screen, there may be empty space around the image
     - `100% 100%`: stretch the image to fit the screen, it may become distorted
     - `auto`: display the image as is
+- `images`: array of image urls
+- `pages`: array of urls
 
 Exposed api:
 
@@ -369,6 +389,7 @@ Exposed api:
 - `next()`: transition to next image
 - `set(index)`: sets the image specified by the index
 - `load(images)`: loads the given images, either as an array of strings or a single string of newline separated urls
+- `pages(pages)`: loads the given pages, either as an array of strings or a single string of newline separated urls
 
 mhub topics:
 
@@ -378,6 +399,34 @@ mhub topics:
 - `gallery:next`
 - `gallery:set` data: `{"index":<number>}`
 - `gallery:load` data: `{"images":[<string>]}`
+- `gallery:pages` data: `{"pages":[<string>]}`
+
+### sprite
+
+Simple individual images or bits of text that can be placed anywhere on the screen. This is useful for displaying watermarks or logos.
+
+To store images online, use any image hosting service, like [imgur](http://imgur.com/), [postimage](https://postimage.io) or [tinypic](http://tinypic.com/)
+
+Configuration options:
+
+- `visible`: initial visibility, defaults to false,
+- `sprites`: an array of objects, containing
+    - `html` (optional): html content of the sprite. This can be text or more elaborate content
+    - `<cssProps>`: any css property to set. For example `left` or `top`. Note that the property names should be camelCased, like `marginLeft`
+
+Exposed api:
+
+- `show()`: show all sprites
+- `hide()`: hide all sprites
+- `showSprite(index)`: show a particular sprite
+- `hideSprite(index)`: hide a particular sprite
+
+mhub topics:
+
+- `gallery:show`
+- `gallery:hide`
+- `gallery:showSprite` data: `{"index":<number>}`
+- `gallery:hideSprite` data: `{"index":<number>}`
 
 ### clock
 
@@ -546,7 +595,7 @@ To include custom styling, create a custom stylesheet to override a default styl
 
 Configuration options:
 
-- `href`: url to a stylesheet, can be local, or hosted somewhere
+- `href`: url to a stylesheet, can be local, or hosted somewhere. It can also be an array of stylesheets, which is used for theme modifiers.
 - `gist`: gist id to load alongside the stylesheet, can be used to customize themes
 
 Exposed api:
@@ -554,6 +603,33 @@ Exposed api:
 - `set`: set the stylesheet, passing in the `href` parameter
 - `gist`: load a stylesheet from a gist id. All css files are concatenated and used as data url
 - `reset`: resets the stylesheet back to the `config.js` option
+
+### geometry
+
+This module controls screen geometry. It allows you to rotate the display, control overscan parameters and zoom.
+
+Configuration options:
+
+- `zoom`: zoom level of the window
+- `aspect`: either the string "native" or the aspect ratio of the device used. This can be used to compensate for aspect ratio problems
+- `rotation`: rotation of the display in degrees
+- `overscan`: array of overscan amount in pixels
+
+Exposed api:
+
+- `right`: rotate right
+- `left`: rotate left
+- `zoomin`: zoom in with 10%
+- `zoomout`: zoom out with 10%
+- `zoomreset`: reset the zoom level to 1
+
+mhub topics:
+
+- `geometry:right`
+- `geometry:left`
+- `geometry:zoomin`
+- `geometry:zoomout`
+- `geometry:zoomreset`
 
 ### keybindings
 
@@ -599,8 +675,8 @@ Themes can be used by pointing the `css` module configuration to a stylesheet. T
 
 ### Included themes
 
-- `themes/default.css`: a colorful default theme that can be used to create your own
-- `themes/rednblue.css`: a simple red and blue theme with slanted edges
+- `themes/rednblue/rednblue.css`: a simple red and blue theme with slanted edges
+- `themes/rednblue-plus/rednblue-plus.css`: an extra fancy red and blue theme
 
 For screenshots, see the `themes` [folder](themes)
 

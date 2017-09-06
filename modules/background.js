@@ -1,7 +1,7 @@
 displaySystem.registerModule({
     name: 'background',
     template: '<div id="background"></div>',
-    style: multiline(function() {/*
+    style: `
         #background {
             position: absolute;
             left: 0;
@@ -12,7 +12,7 @@ displaySystem.registerModule({
         #background.hidden {
             display: none;
         }
-    */}),
+    `,
     factory: function(config) {
         var el;
 
@@ -29,11 +29,13 @@ displaySystem.registerModule({
         }
 
         function show() {
-            getElement().className = '';
+            getElement().classList.remove('hidden');
+            getElement().classList.add('visible');
         }
 
         function hide() {
-            getElement().className = 'hidden';
+            getElement().classList.add('hidden');
+            getElement().classList.remove('visible');
         }
 
         if (config.color) {
